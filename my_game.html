@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Trial game</title>
+</head>
+<body>
+
+    <main>
+        <canvas width="960" height="640" id="game" style="border: solid 1px black;"></canvas>
+        <div>
+            <button onclick=" setInterval(move, 100);" >Move</button>
+            <button onclick="jump();">Jump</button>
+            <button onclick="shoot()">Shoot</button>
+        </div>
+        <div>
+            <button onclick=" setInterval(move2, 100);" >Move2</button>
+            <button onclick="jump2();">Jump2</button>
+            <button onclick="shoot2()">Shoot2</button>
+            <button onclick="stop2()">Stop 2</button>
+        </div>
+        
+
+        <script>
+
+            let Canvas = document.getElementById('game');
+
+            let context = Canvas.getContext('2d');
+
+            const grid = 16;
+
+            let shape = {
+
+                x: 96,
+                y: 192,
+                a: 768,
+                b: 192
+            }
+            //jump for red guy
+            function jump(){
+                context.clearRect(0, 0, Canvas.width,  Canvas.height)
+
+                if(shape.y === 128 ){
+                    shape.y = 192 ;
+                }else if(shape.y <= 192){
+                    shape.y -= grid*4 ;
+                }
+            
+            }
+            //jump for blue guy
+            function jump2(){
+                context.clearRect(0, 0, Canvas.width,  Canvas.height)
+
+                if(shape.b === 128 ){
+                    shape.b = 192 ;
+                }else if(shape.b <= 192){
+                    shape.b -= grid*4 ;
+                }
+            
+            }
+            //shoot for red guy
+            function shoot(){
+                for (let i= 0; i<100; i++ ){
+                    
+                    setTimeout(() => {context.fillRect(shape.x+grid*11+i*grid, shape.y+grid*6,grid, grid)
+
+                     context.clearRect(shape.x+grid*10+i*grid, shape.y+grid*6,grid, grid);
+
+                    }, 50*i);
+                    
+                }       
+                context.fillStyle = 'red'
+                context.fillRect(shape.x+grid*6, shape.y+grid*6,grid*4, grid);
+                
+            }
+            //shoot for blue guy
+            function shoot2(){
+                for (let i= 0; i<100; i++ ){
+                    
+                    setTimeout(() => {context.fillRect(shape.a-grid*7-i*grid, shape.b+grid*6,grid, grid)
+
+                     context.clearRect(shape.a-grid*6-i*grid, shape.b+grid*6,grid, grid);
+
+                    }, 50*i);
+                    
+                }       
+                context.fillStyle = 'blue'
+                context.fillRect(shape.a-grid*2, shape.b+grid*6,-grid*4, grid);
+                
+            }
+            //for the red guy
+            function move(){
+                
+                if(shape.x > Canvas.width+grid){
+                    return shape.x = -grid*5;
+                }
+                context.clearRect(0, 0, Canvas.width,  Canvas.height)
+                shape.x +=grid
+                
+            }
+
+            //for the blue guy
+            function move2(){
+                function stop2(){
+                return ; 
+                }
+                if(shape.a < -grid*6){
+                    shape.a = Canvas.width+grid*2;
+                }
+                context.clearRect(0, 0, Canvas.width,  Canvas.height)
+                shape.a -=grid;
+    
+            }
+            
+            function loop() {
+
+                requestAnimationFrame(loop);
+
+                context.fillStyle ="red";
+                //first person
+                context.fillRect(shape.x, shape.y,grid*4, grid*4);
+                
+                context.fillRect(shape.x+grid*3/2,shape.y+grid*4,grid,grid*2);
+
+                context.fillRect(shape.x-grid*2, shape.y+grid*6, grid*8, grid*8)
+
+                context.fillRect(shape.x, shape.y+grid*14, grid, grid*6)
+
+                context.fillRect(shape.x+grid*3, shape.y+grid*14, grid, grid*6)
+                //mouth subparts
+                context.fillStyle="black";
+                context.fillRect(shape.x+grid/2, shape.y+grid/2, grid, grid)
+
+                context.fillRect(shape.x+grid*5/2, shape.y+grid/2, grid, grid)
+
+                context.fillRect(shape.x+grid,shape.y+grid*5/2,grid*2,grid)
+
+                //second person
+                context.fillStyle="blue";
+                context.fillRect(shape.a, shape.b,grid*4, grid*4);
+                
+                context.fillRect(shape.a+grid*3/2,shape.b+grid*4,grid,grid*2);
+
+                context.fillRect(shape.a-grid*2, shape.b+grid*6, grid*8, grid*8)
+
+                context.fillRect(shape.a, shape.b+grid*14, grid, grid*6)
+
+                context.fillRect(shape.a+grid*3, shape.b+grid*14, grid, grid*6)
+                //mouth subparts
+                context.fillStyle="black";
+                context.fillRect(shape.a+grid/2, shape.b+grid/2, grid, grid)
+
+                context.fillRect(shape.a+grid*5/2, shape.b+grid/2, grid, grid)
+
+                context.fillRect(shape.a+grid,shape.b+grid*5/2,grid*2,grid)
+                
+            }
+
+            requestAnimationFrame(loop);
+
+            
+        </script>    
+    </main>
+</body>
+</html>
